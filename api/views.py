@@ -119,15 +119,6 @@ class ProductFilterView(generics.ListAPIView):
 			rating = [0,1,2,3,4,5]
 
 
-
-		print(bool_filters['category'])
-		print(bool_filters['national'])
-		print(bool_filters['is_promotion'])
-		print(bool_filters['free_shipping'])
-		print(bool_filters['is_new'])
-
-
-
 		#filtering...
 		return Product.objects.filter(
 			category__in=bool_filters['category'], national__in=bool_filters['national'], is_promotion__in=bool_filters['is_promotion'],
