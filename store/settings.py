@@ -32,7 +32,8 @@ INSTALLED_APPS = [
 
     'api',
     'rest_framework',
-    'auth_api'
+    'auth_api',
+    'rest_framework_simplejwt.token_blacklist'
 ]
 
 MIDDLEWARE = [
@@ -137,7 +138,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny'
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": (
-
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     )
 }
