@@ -9,7 +9,7 @@ from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 
 
-from .models import WishList,History
+from .models import WishList,History,CartItem
 
 class UserWishList(APIView):
 	permission_classes = [IsAuthenticated]
@@ -23,8 +23,6 @@ class UserWishList(APIView):
 			product = ProductSerializer(product)
 
 			products.append(product.data)
-
-
 
 		return Response(products)
 
@@ -41,7 +39,20 @@ class UserHistory(APIView):
 
 			products.append(product.data)
 
+		return Response(products)
 
+
+class UserCart(APIView):
+	permission_classes = [IsAuthenticated]
+
+	def get(self,request):
+		products = []
+
+		for item in  CartItem.objects.filter(user=request.user):
+			product = item.product
+			product = ProductSerializer(product)
+
+			products.append(product.data)
 
 		return Response(products)
 
@@ -53,7 +64,6 @@ class AddWish(APIView):
 
 		product_id = request.POST.get('product_id')
 		product = Product.objects.get(id=product_id)
-
 
 		try:
 			instance = WishList.objects.create(user=request.user,product=product)
@@ -72,12 +82,24 @@ class AddHistory(APIView):
 		product_id = request.POST.get('product_id')
 		product = Product.objects.get(id=product_id)
 
-		try:
-			instance = History.objects.create(user=request.user,product=product)
-			instance.save()
-			return Response({"status":'OK'})
-		except IntegrityError as e:
-			return Response({"detail":"Product already exists in wishlist"})
+		instance = History.objects.create(user=request.user,product=product)
+		instance.save()
+		return Response({"status":'OK'})
+
+
+
+class AddToCart(APIView):
+	permission_classes = [IsAuthenticated]
+
+	def post(self,request):
+
+		product_id = request.POST.get('product_id')
+		product = Product.objects.get(id=product_id)
+
+
+		instance = CartItem.objects.create(user=request.user,product=product)
+		instance.save()
+		return Response({"status":'OK'})
 
 
 
@@ -91,6 +113,23 @@ class DelWish(APIView):
 
 		try:
 			instance = WishList.objects.get(user=request.user,product=product)
+			instance.delete()
+			return Response({"status":'OK'})
+		except ObjectDoesNotExist as e:
+			return Response({"detail":"Product does not exist in wishlist"})
+
+
+
+class DelCartItem(APIView):
+	permission_classes = [IsAuthenticated]
+
+	def post(self,request):
+
+		product_id = request.POST.get('product_id')
+		product = Product.objects.get(id=product_id)
+
+		try:
+			instance = CartItem.objects.get(user=request.user,product=product)
 			instance.delete()
 			return Response({"status":'OK'})
 		except ObjectDoesNotExist as e:
