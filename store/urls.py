@@ -10,8 +10,8 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('',include('api.urls')),
-    path('auth/',include("auth_api.urls"))
-
+    path('auth/',include("auth_api.urls")),
+    path('user/',include("user_utils.urls"))
 
 ]
 

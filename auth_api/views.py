@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from .serializers import RegisterUserSerializer
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
+from .models import NewUser
 
 class RegisterUser(APIView):
 
@@ -20,6 +21,7 @@ class RegisterUser(APIView):
 
 
 class LogoutToken(APIView):
+	
 	permission_classes = [IsAuthenticated]
 
 	def post(self,request):
@@ -33,9 +35,12 @@ class LogoutToken(APIView):
 
 
 class CheckToken(APIView):
+
 	permission_classes = [IsAuthenticated]
 
 	def get(self, request):
 
 		data = {"auth_status":"OK"}
 		return Response(data)
+
+

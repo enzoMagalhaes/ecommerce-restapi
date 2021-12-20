@@ -60,8 +60,6 @@ class ProductFilterView(generics.ListAPIView):
 		frete_gratis = self.request.query_params.get('frete_gratis',False)
 
 		bool_filters = {'category':[],'national':[],'is_promotion':[],'free_shipping':[],'is_new':[]}
-		
-
 
 		for category in categories:
 			if category[1] == 'true':
@@ -71,20 +69,12 @@ class ProductFilterView(generics.ListAPIView):
 			bool_filters['category'].extend(self.categories)
 
 
-
-
-
 		for feature in national:
-			print(feature)
 			if feature[1] == 'true':
 				bool_filters['national'].append(feature[0])
 
 		if len(bool_filters['national']) == 0:
 			bool_filters['national'].extend([True,False])
-
-
-
-
 
 		for feature in is_new:
 			if feature[1] == 'true':
