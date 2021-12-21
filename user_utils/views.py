@@ -62,7 +62,7 @@ class AddWish(APIView):
 
 	def post(self,request):
 
-		product_id = request.POST.get('product_id')
+		product_id = request.data.get('product_id')
 		product = Product.objects.get(id=product_id)
 
 		try:
@@ -79,7 +79,7 @@ class AddHistory(APIView):
 
 	def post(self,request):
 		
-		product_id = request.POST.get('product_id')
+		product_id = request.data.get('product_id')
 		product = Product.objects.get(id=product_id)
 
 		instance = History.objects.create(user=request.user,product=product)
@@ -93,7 +93,7 @@ class AddToCart(APIView):
 
 	def post(self,request):
 
-		product_id = request.POST.get('product_id')
+		product_id = request.data.get('product_id')
 		product = Product.objects.get(id=product_id)
 
 
@@ -108,7 +108,7 @@ class DelWish(APIView):
 
 	def post(self,request):
 
-		product_id = request.POST.get('product_id')
+		product_id = request.data.get('product_id')
 		product = Product.objects.get(id=product_id)
 
 		try:
@@ -125,7 +125,7 @@ class DelCartItem(APIView):
 
 	def post(self,request):
 
-		product_id = request.POST.get('product_id')
+		product_id = request.data.get('product_id')
 		product = Product.objects.get(id=product_id)
 
 		try:
@@ -134,3 +134,41 @@ class DelCartItem(APIView):
 			return Response({"status":'OK'})
 		except ObjectDoesNotExist as e:
 			return Response({"detail":"Product does not exist in wishlist"})
+
+
+
+class MakeTransaction(APIView):
+	permission_classes = [IsAuthenticated]
+
+	def post(self,request):
+
+		instance = CartItem.objects.filter(user=request.user)
+
+		for row in instance:
+
+			history_product = History.objects.create(user=request.user,product=row.product)
+			history_product.save()
+
+
+		instance.delete()
+		return Response({"detail":"transaction complete"})
+
+    # const data = {
+    #   Nome:Nome,
+    #   Sobrenome:Sobrenome,
+    #   Estado:Estado,
+    #   CEP:CEP,
+    #   Endereco:Endereco,
+    #   Numero:Numero,
+    #   Complemento:Complemento,
+    #   Bairro:Bairro,
+    #   Cidade:Cidade,
+    #   Cartao:Cartao,
+    #   CartaoNome:CartaoNome,
+    #   CPF:CPF,
+    #   MM:MM,
+    #   AA:AA,
+    #   CVV:CVV,
+    # }
+
+		

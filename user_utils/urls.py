@@ -15,5 +15,7 @@ urlpatterns = [
 
     path('delwish',views.DelWish.as_view()),
     path('delcart',views.DelCartItem.as_view()),
+
+    path('make_transaction',views.MakeTransaction.as_view())
 ]
 
