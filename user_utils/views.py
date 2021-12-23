@@ -126,10 +126,11 @@ class DelCartItem(APIView):
 	def post(self,request):
 
 		product_id = request.data.get('product_id')
+		print("PRODUTO: " +product_id)
 		product = Product.objects.get(id=product_id)
 
 		try:
-			instance = CartItem.objects.get(user=request.user,product=product)
+			instance = CartItem.objects.filter(user=request.user,product=product)
 			instance.delete()
 			return Response({"status":'OK'})
 		except ObjectDoesNotExist as e:
