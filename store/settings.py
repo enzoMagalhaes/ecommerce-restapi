@@ -34,12 +34,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'auth_api',
     'rest_framework_simplejwt.token_blacklist',
-    'user_utils'
+    'user_utils',
+    'storages'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -123,19 +124,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 STATIC_URL = 'static/'
 STATIC_ROOT= BASE_DIR/'static'
 
 MEDIA_URL = '/images/'
+MEDIA_ROOT = STATIC_ROOT / 'images'
 
+if DEBUG == False:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-#development only 
-# STATICFILES_DIRS = [
-#     BASE_DIR / 'static'
-# ]
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
-MEDIA_ROOT = BASE_DIR / 'static/images'
-
+    AWS_STORAGE_BUCKET_NAME = 'ecommerce-website-media-storage'
+    AWS_QUERYSTRING_AUTH = False
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
