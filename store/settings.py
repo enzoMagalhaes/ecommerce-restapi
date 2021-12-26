@@ -8,9 +8,6 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-kmdlpvcsy*_qef=a!t#ie7#(&ry2uf6r5&u0jm%q=ljflyegmk'
 
@@ -159,6 +156,7 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+    'https://ecommerce-reactfrontend.herokuapp.com'
 ]
 
 # Custom User Model
