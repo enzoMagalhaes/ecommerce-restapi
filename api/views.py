@@ -6,15 +6,14 @@ from .serializers import ProductSerializer
 from django.db.models import Q
 
 
-class ProductsList(generics.ListCreateAPIView):
+class ProductsList(generics.ListAPIView):
 	queryset = Product.objects.all()
 	serializer_class = ProductSerializer
 
 
-class GetProduct(generics.RetrieveDestroyAPIView):
+class GetProduct(generics.RetrieveAPIView):
 	queryset = Product.objects.all()
 	serializer_class = ProductSerializer
-
 
 class ProductSearchView(generics.ListAPIView):
 	queryset = Product.objects.all()
@@ -25,7 +24,6 @@ class ProductSearchView(generics.ListAPIView):
 
 class ProductFilterView(generics.ListAPIView):
 	serializer_class = ProductSerializer
-
 
 	categories = [
 		'Celulares',

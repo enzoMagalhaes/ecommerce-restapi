@@ -2,10 +2,16 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
+import dotenv
 
 def main():
-    """Run administrative tasks."""
+
+    # set enviroment variables in development
+    try:
+        dotenv.read_dotenv()
+    except Exception as e:
+        pass
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'store.settings')
     try:
         from django.core.management import execute_from_command_line

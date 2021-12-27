@@ -96,7 +96,6 @@ class AddToCart(APIView):
 		product_id = request.data.get('product_id')
 		product = Product.objects.get(id=product_id)
 
-
 		instance = CartItem.objects.create(user=request.user,product=product)
 		instance.save()
 		return Response({"status":'OK'})
@@ -134,7 +133,7 @@ class DelCartItem(APIView):
 			instance.delete()
 			return Response({"status":'OK'})
 		except ObjectDoesNotExist as e:
-			return Response({"detail":"Product does not exist in wishlist"})
+			return Response({"detail":"Product does not exist in Cart"})
 
 
 
