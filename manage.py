@@ -2,12 +2,12 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-import dotenv
 
 def main():
 
     # set enviroment variables in development
     try:
+        import dotenv
         dotenv.read_dotenv()
     except Exception as e:
         pass
