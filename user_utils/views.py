@@ -149,7 +149,6 @@ class MakeTransaction(APIView):
 			history_product = History.objects.create(user=request.user,product=row.product)
 			history_product.save()
 
-
 		instance.delete()
 		return Response({"detail":"transaction complete"})
 

@@ -26,12 +26,15 @@ class LogoutToken(APIView):
 
 	def post(self,request):
 		try:
-			refresh_token = request.data['refresh_token']
+			refresh_token = request.data.get('refresh_token')
 			token = RefreshToken(refresh_token)
 			token.blacklist()
 			return Response(status=status.HTTP_204_NO_CONTENT)
 		except Exception as e:
-			return Response(status=status.HTTP_400_BAD_REQUEST)
+
+			data={"detail": str(e)}
+
+			return Response(data,status=status.HTTP_400_BAD_REQUEST)
 
 
 class CheckToken(APIView):
