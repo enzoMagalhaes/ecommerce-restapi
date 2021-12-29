@@ -3,6 +3,7 @@
 from pathlib import Path
 from datetime import timedelta
 import os
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -73,17 +74,33 @@ WSGI_APPLICATION = 'store.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# postgres://knawmkqnqmcoui:7b38b3b4c9357e7d87a492816d556e1a4ebb6d631722e03ffb04cf02fe93f52f@ec2-18-213-12-212.compute-1.amazonaws.com:5432/dfpkafc9agkh8a
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dfpkafc9agkh8a',
-        'HOST': 'ec2-18-213-12-212.compute-1.amazonaws.com',
-        'PORT': 5432,
-        'USER': 'knawmkqnqmcoui',
-        'PASSWORD': '7b38b3b4c9357e7d87a492816d556e1a4ebb6d631722e03ffb04cf02fe93f52f',
+if 'test' in sys.argv:
+    #Test database 
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('TEST_DB_NAME'),
+            'HOST': os.getenv('TEST_DB_HOST'),
+            'PORT': 5432,
+            'USER': os.getenv('TEST_DB_USER'),
+            'PASSWORD': os.getenv('TEST_DB_PASSWORD'),
+            'TEST': {
+                'NAME': os.getenv('TEST_DB_NAME')
+            }
+        }
     }
-}
+else:
+    #Production Database
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME'),
+            'HOST': os.getenv('DB_HOST'),
+            'PORT': 5432,
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+        }
+    }
 
 
 # Password validation
