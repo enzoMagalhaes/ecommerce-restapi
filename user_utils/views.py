@@ -125,7 +125,6 @@ class DelCartItem(APIView):
 	def post(self,request):
 
 		product_id = request.data.get('product_id')
-		print("PRODUTO: " +product_id)
 		product = Product.objects.get(id=product_id)
 
 		try:
